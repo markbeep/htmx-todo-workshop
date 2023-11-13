@@ -1,0 +1,62 @@
+package components
+
+import "fmt"
+import "coding-weekend/internal"
+
+templ Index(todos []internal.Todo) {
+	@Base() {
+		@TodoList(todos)
+	}
+}
+
+templ TodoList(todos []internal.Todo) {
+	<div id="todo-list" class="flex flex-col">
+		<h1 class="text-3xl">Todo List</h1>
+		<form
+ 			class="grid grid-cols-2 border border-slate-100 rounded-md p-4 shadow-black shadow-md gap-4"
+ 			hx-post={ fmt.Sprintf("/todo") }
+ 			hx-target="#todo-list"
+ 			hx-swap="outerHTML"
+		>
+			for _, t := range todos {
+				@todoItem(t.Text, t.ID)
+			}
+			@todoInput()
+		</form>
+	</div>
+}
+
+templ todoItem(text string, id int) {
+	<p id={ fmt.Sprintf("text-%d", id) } class="w-full self-center">
+		{ text }
+	</p>
+	<div
+ 		id={ fmt.Sprintf("button-%d", id) }
+ 		class="flex justify-end"
+	>
+		<button
+ 			class="bg-transparent text-slate-100 font-semibold py-2 px-4 border border-slate-100 rounded hover:bg-slate-100 hover:text-black active:bg-slate-300 active:text-slate-700"
+ 			hx-delete={ fmt.Sprintf("/todo/%d", id) }
+ 			hx-target="#todo-list"
+ 			hx-swap="outerHTML"
+		>
+			X
+		</button>
+	</div>
+}
+
+templ todoInput() {
+	<input
+ 		placeholder="Enter todo here..."
+ 		name="text"
+ 		type="text"
+ 		class="w-full h-full bg-transparent border border-slate-100 rounded-md py-2 px-4"
+ 		required
+	/>
+	<button
+ 		type="submit"
+ 		class="bg-transparent h-full text-slate-100 font-semibold py-2 px-4 border border-slate-100 rounded hover:bg-slate-100 hover:text-black active:bg-slate-300 active:text-slate-700"
+	>
+		Add
+	</button>
+}
