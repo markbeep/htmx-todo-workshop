@@ -20,7 +20,7 @@ import (
 // command line flags
 var (
 	port = flag.String("port", "3000", "the port to serve the website on")
-	host = flag.String("host", "localhost", "the host to serve the website on")
+	host = flag.String("host", "0.0.0.0", "the host to serve the website on")
 )
 
 var (
@@ -37,6 +37,7 @@ func main() {
 
 	todos := map[string][]internal.Todo{}
 
+	// Handles all GET requests to /
 	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
 		requestId := extractRequestUser(middleware.GetReqID(r.Context()))
 		userTodos, ok := todos[extractRequestUser(requestId)]
@@ -47,22 +48,26 @@ func main() {
 		}
 	})
 
+	// Handles all POST requests to /todo
 	r.Post("/todo", func(w http.ResponseWriter, r *http.Request) {
 		requestId := extractRequestUser(middleware.GetReqID(r.Context()))
 
-		r.ParseForm()
+		r.ParseForm() // REQUIRED for the r.PostFormValue to get filled with values
 		text := r.PostFormValue("text")
-		lock.Lock()
-		defer lock.Unlock() // gets called even on panic
+
+		lock.Lock()         // lock so we can safely increase todoCounter
+		defer lock.Unlock() // gets called even on panic, but only at the end of the function
 		todos[requestId] = append(todos[requestId], internal.Todo{Text: text, ID: todoCounter})
 		todoCounter++
+
 		templ.Handler(components.TodoList(todos[requestId])).ServeHTTP(w, r)
 	})
 
+	// Handles all DELETE requests to /todo/{id}
 	r.Delete("/todo/{id:\\d+}", func(w http.ResponseWriter, r *http.Request) {
 		requestId := extractRequestUser(middleware.GetReqID(r.Context()))
 
-		// make sure the argument is a valid int (not too big)
+		// make sure the argument is a valid int (not too large for example)
 		id, err := strconv.Atoi(chi.URLParam(r, "id"))
 		if err != nil {
 			http.Error(w, "invalid id", http.StatusBadRequest)
@@ -83,6 +88,7 @@ func main() {
 	}
 }
 
+// Takes the Request ID string from chi and cuts away the count at the end
 func extractRequestUser(requestId string) string {
 	// requestId is of format: Name/randomKey-00000x
 	splitted := strings.Split(requestId, "-")

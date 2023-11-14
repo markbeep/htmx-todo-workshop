@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  htmx:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./components:/app/components
+      - ./internal:/app/internal
+      - ./main.go:/app/main.go

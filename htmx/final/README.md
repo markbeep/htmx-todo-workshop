@@ -34,10 +34,12 @@ How the server is to be started depends on if you went the Docker or manual rout
 - Docker: `docker compose up --build`
 - Manual: `air`
 
+The website will not be accessible at http://localhost:3000.
+
 ## Helpful extensions for your editor
 
 These are some optional and helpful extensions to improve your coding experience with the tech stack:
 
 - TailwindCSS [Intellisense]
 - templ[-vscode]
-- Golang
+- Go
