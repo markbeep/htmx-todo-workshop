@@ -33,14 +33,12 @@ templ TodoList(todos []internal.Todo) {
 // A single todo item
 
 templ todoItem(todo internal.Todo) {
-	<p id={ fmt.Sprintf("text-%d", todo.ID) } class="w-full self-center">
+	<p class="w-full self-center">
 		{ todo.Text }
 	</p>
-	<div
- 		id={ fmt.Sprintf("button-%d", todo.ID) }
- 		class="flex justify-end"
-	>
+	<div class="flex justify-end">
 		<button
+ 			type="button"
  			class="bg-transparent text-slate-100 font-semibold py-2 px-4 border border-slate-100 rounded hover:bg-slate-100 hover:text-black active:bg-slate-300 active:text-slate-700"
  			hx-delete={ fmt.Sprintf("/todo/%d", todo.ID) }
  			hx-target="#todo-list"

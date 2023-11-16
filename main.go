@@ -22,8 +22,8 @@ var (
 )
 
 var (
-	todoCounter = 0                 // used for assigning todo ids
 	todos       = []internal.Todo{} // all todos are stored in a global array
+	todoCounter = 0                 // used for assigning todo ids
 )
 
 func main() {
