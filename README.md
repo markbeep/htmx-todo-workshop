@@ -1,3 +1,5 @@
+> # This is the final code. Head to the `template` branch to code along with an empty setup.
+
 # htmx Go Template Workshop
 
 This is a barebones example on how you can create a single-page application todo-list using htmx, Go with the templ library for templates in the backend, and tailwindcss for styling elements.
