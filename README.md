@@ -1,4 +1,4 @@
-> # This is the template code. Head to the `main` branch to see how the final code will look like.
+> # This is the final code. Head to the `template` branch to code along with an empty setup.
 
 # htmx Go Template Workshop
 
