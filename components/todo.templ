@@ -4,6 +4,7 @@ import "fmt"
 import "coding-weekend/internal"
 
 // The index page
+
 templ Index(todos []internal.Todo) {
 	@Base() {
 		@TodoList(todos)
@@ -11,6 +12,7 @@ templ Index(todos []internal.Todo) {
 }
 
 // The list of all todos. Basically the whole page functionality
+
 templ TodoList(todos []internal.Todo) {
 	<div id="todo-list" class="flex flex-col">
 		<h1 class="text-3xl">Todo List</h1>
@@ -29,6 +31,7 @@ templ TodoList(todos []internal.Todo) {
 }
 
 // A single todo item
+
 templ todoItem(todo internal.Todo) {
 	<p id={ fmt.Sprintf("text-%d", todo.ID) } class="w-full self-center">
 		{ todo.Text }
@@ -49,10 +52,11 @@ templ todoItem(todo internal.Todo) {
 }
 
 // The input field for adding new todos
+
 templ todoInput() {
 	<input
  		placeholder="Enter todo here..."
-		name="text"
+ 		name="text"
  		type="text"
  		class="w-full h-full bg-transparent border border-slate-100 rounded-md py-2 px-4"
  		required

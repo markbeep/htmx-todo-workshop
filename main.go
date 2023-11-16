@@ -22,8 +22,8 @@ var (
 )
 
 var (
-	todoCounter = 0 // used for assigning todo ids
-	todos       = []internal.Todo{}
+	todoCounter = 0                 // used for assigning todo ids
+	todos       = []internal.Todo{} // all todos are stored in a global array
 )
 
 func main() {
@@ -37,7 +37,7 @@ func main() {
 		templ.Handler(components.Index(todos)).ServeHTTP(w, r)
 	})
 
-	// Handles all POST requests to /todo
+	// Handles all POST requests to /todo made by htmx
 	r.Post("/todo", func(w http.ResponseWriter, r *http.Request) {
 		r.ParseForm() // REQUIRED for the r.PostFormValue to get filled with values
 		text := r.PostFormValue("text")
@@ -48,7 +48,7 @@ func main() {
 		templ.Handler(components.TodoList(todos)).ServeHTTP(w, r)
 	})
 
-	// Handles all DELETE requests to /todo/{id}
+	// Handles all DELETE requests to /todo/{id} where id is some number
 	r.Delete("/todo/{id:\\d+}", func(w http.ResponseWriter, r *http.Request) {
 		// make sure the argument is a valid int (not too large for example)
 		id, err := strconv.Atoi(chi.URLParam(r, "id"))
