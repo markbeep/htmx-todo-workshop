@@ -1,0 +1,31 @@
+@tailwind components;
+@tailwind utilities;
+@tailwind base;
+
+
+@layer base {
+    form {
+        @apply grid grid-cols-2 border border-slate-100 rounded-md p-4 shadow-black shadow-md gap-4;
+    }
+    
+    h1 {
+        @apply text-3xl;
+    }
+    
+    p {
+        @apply w-full self-center;
+    }
+    
+    button {
+        @apply bg-transparent text-slate-100 font-semibold py-2 px-4 border border-slate-100 rounded hover:bg-slate-100 hover:text-black active:bg-slate-300 active:text-slate-700;
+    }
+    
+    input {
+        @apply w-full h-full bg-transparent border border-slate-100 rounded-md py-2 px-4;
+    }
+}
+
+
+#todo-list {
+    @apply flex flex-col;
+}

@@ -14,10 +14,9 @@ templ Index(todos []internal.Todo) {
 // The list of all todos. Basically the whole page functionality
 
 templ TodoList(todos []internal.Todo) {
-	<div id="todo-list" class="flex flex-col">
-		<h1 class="text-3xl">Todo List</h1>
+	<div id="todo-list">
+		<h1>Todo List</h1>
 		<form
- 			class="grid grid-cols-2 border border-slate-100 rounded-md p-4 shadow-black shadow-md gap-4"
  			hx-post={ fmt.Sprintf("/todo") }
  			hx-target="#todo-list"
  			hx-swap="outerHTML"
@@ -33,13 +32,12 @@ templ TodoList(todos []internal.Todo) {
 // A single todo item
 
 templ todoItem(todo internal.Todo) {
-	<p class="w-full self-center">
+	<p>
 		{ todo.Text }
 	</p>
 	<div class="flex justify-end">
 		<button
  			type="button"
- 			class="bg-transparent text-slate-100 font-semibold py-2 px-4 border border-slate-100 rounded hover:bg-slate-100 hover:text-black active:bg-slate-300 active:text-slate-700"
  			hx-delete={ fmt.Sprintf("/todo/%d", todo.ID) }
  			hx-target="#todo-list"
  			hx-swap="outerHTML"
@@ -56,12 +54,10 @@ templ todoInput() {
  		placeholder="Enter todo here..."
  		name="text"
  		type="text"
- 		class="w-full h-full bg-transparent border border-slate-100 rounded-md py-2 px-4"
  		required
 	/>
 	<button
  		type="submit"
- 		class="bg-transparent h-full text-slate-100 font-semibold py-2 px-4 border border-slate-100 rounded hover:bg-slate-100 hover:text-black active:bg-slate-300 active:text-slate-700"
 	>
 		Add
 	</button>

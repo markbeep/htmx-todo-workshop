@@ -17,6 +17,7 @@
               go
               air
               templ-pkg
+              tailwindcss
           ];
         };
       }

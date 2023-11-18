@@ -62,6 +62,11 @@ func main() {
 		templ.Handler(components.TodoList(todos)).ServeHTTP(w, r)
 	})
 
+	// Can be ignored. Returns the css for the page
+	r.Get("/main.css", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "static/main.css")
+	})
+
 	// starts listening
 	fullHost := fmt.Sprintf("%s:%s", *host, *port)
 	log.Printf("serving on %s", fullHost)
