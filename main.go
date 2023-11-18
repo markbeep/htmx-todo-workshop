@@ -22,6 +22,11 @@ func main() {
 	r := chi.NewRouter()
 	r.Use(middleware.Logger) // adds helpful logging
 
+	// Can be ignored. Returns the css for the page
+	r.Get("/main.css", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "static/main.css")
+	})
+
 	// starts listening
 	fullHost := fmt.Sprintf("%s:%s", *host, *port)
 	log.Printf("serving on %s", fullHost)

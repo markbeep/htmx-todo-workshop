@@ -50,15 +50,6 @@ The website will now be accessible at http://localhost:3000.
 
 These are some optional and helpful extensions to improve your coding experience with the tech stack:
 
-- TailwindCSS [Intellisense]
-  - Additionally add `templ` to the tailwind config so that it runs in templ files.
-    Vscode JSON User Settings as an example:
-    ```json
-    "tailwindCSS.includeLanguages": {
-      ...
-      "templ": "html"
-    }
-    ```
 - templ[-vscode]
 - Go
 
@@ -96,7 +87,7 @@ templ Greeting(person Person) {
 
 ### Tailwindcss
 
-For styling everything, we use [Tailwindcss](https://tailwindcss.com/). It's a must-have for designing a website. It allows you to more easily write and use css. For this project, most of the tailwindcss should already be added to components though, so you don't really have to touch it.
+For styling everything, we use [Tailwindcss](https://tailwindcss.com/). It's a must-have for designing a website. It allows you to more easily write and use css. For this project, most of the tailwindcss should already be added to components though, so you don't really have to touch it. To make the main part of the code easier to understand and not bloated as much, all Tailwindcss has been throwin into `static/tw.css`.
 
 # Code along workshop
 
@@ -130,11 +121,9 @@ For styling everything, we use [Tailwindcss](https://tailwindcss.com/). It's a m
    ```go
    // The list of all todos. Basically the whole page functionality
    templ TodoList() {
-       <div id="todo-list" class="flex flex-col">
-           <h1 class="text-3xl">Todo List</h1>
-           <form
-               class="grid grid-cols-2 border border-slate-100 rounded-md p-4 shadow-black shadow-md gap-4"
-           >
+       <div id="todo-list">
+           <h1>Todo List</h1>
+           <form>
                <p>
                    First Todo
                </p>
@@ -158,14 +147,11 @@ For styling everything, we use [Tailwindcss](https://tailwindcss.com/). It's a m
    ```go
    // A single todo item
    templ todoItem() {
-       <p class="w-full self-center">
+       <p>
            Todo text placeholder
        </p>
        <div class="flex justify-end">
-           <button
-               type="button"
-               class="bg-transparent text-slate-100 font-semibold py-2 px-4 border border-slate-100 rounded hover:bg-slate-100 hover:text-black active:bg-slate-300 active:text-slate-700"
-           >
+           <button type="button">
                X
            </button>
        </div>
@@ -176,11 +162,9 @@ For styling everything, we use [Tailwindcss](https://tailwindcss.com/). It's a m
 
    ```go
    templ TodoList() {
-       <div id="todo-list" class="flex flex-col">
-           <h1 class="text-3xl">Todo List</h1>
-           <form
-               class="grid grid-cols-2 border border-slate-100 rounded-md p-4 shadow-black shadow-md gap-4"
-           >
+       <div id="todo-list">
+           <h1>Todo List</h1>
+           <form>
                @todoItem()
                @todoItem()
            </form>
@@ -225,11 +209,9 @@ For styling everything, we use [Tailwindcss](https://tailwindcss.com/). It's a m
    1. Last step is to modify our `TodoList` to create a `todoItem` for every todo. For this we add a Go for-loop:
       ```go
       templ TodoList(todos []internal.Todo) {
-          <div id="todo-list" class="flex flex-col">
-              <h1 class="text-3xl">Todo List</h1>
-              <form
-                  class="grid grid-cols-2 border border-slate-100 rounded-md p-4 shadow-black shadow-md gap-4"
-              >
+          <div id="todo-list">
+              <h1>Todo List</h1>
+              <form>
                   for _, t := range todos { // IMPORTANT: the first value (underscore) is the index in Go. We can ignore it
                       @todoItem(t)
                   }
@@ -240,7 +222,7 @@ For styling everything, we use [Tailwindcss](https://tailwindcss.com/). It's a m
 8. All errors should be gone now. Let's finish `todoItem` by making it actually use the passed in todo struct:
    ```go
    templ todoItem(todo internal.Todo) {
-       <p class="w-full self-center">
+       <p>
            { todo.Text } // add this
        </p>
        ...
@@ -261,13 +243,9 @@ For styling everything, we use [Tailwindcss](https://tailwindcss.com/). It's a m
             placeholder="Enter todo here..."
             name="text"
             type="text"
-            class="w-full h-full bg-transparent border border-slate-100 rounded-md py-2 px-4"
             required
         />
-        <button
-            type="submit"
-            class="bg-transparent h-full text-slate-100 font-semibold py-2 px-4 border border-slate-100 rounded hover:bg-slate-100 hover:text-black active:bg-slate-300 active:text-slate-700"
-        >
+        <button type="submit">
             Add
         </button>
     }
@@ -304,10 +282,7 @@ We can now visit our site and we'll see the following. This concludes all the ba
    ```go
    templ TodoList(todos []internal.Todo) {
        ...
-           <form
-               class="grid grid-cols-2 border border-slate-100 rounded-md p-4 shadow-black shadow-md gap-4"
-               hx-post="/todo" // add this
-           >
+           <form hx-post="/todo"> // add this
        ...
    }
    ```
@@ -354,10 +329,9 @@ We can now visit our site and we'll see the following. This concludes all the ba
 
    ```go
    templ TodoList(todos []internal.Todo) {
-       <div id="todo-list" class="flex flex-col">
-           <h1 class="text-3xl">Todo List</h1>
+       <div id="todo-list">
+           <h1>Todo List</h1>
            <form
-               class="grid grid-cols-2 border border-slate-100 rounded-md p-4 shadow-black shadow-md gap-4"
                hx-post="/todo"
                hx-target="#todo-list"
                hx-swap="outerHTML"
@@ -387,20 +361,19 @@ We can now visit our site and we'll see the following. This concludes all the ba
 
 6. We have almost everything done already. We just need a way to clean up todos now. For that we want to have it so clicking on the `X` button sends a delete request to `/todo/{id}` with the correct todo ID. The backend then deletes the correct ID and sends back the correct html for the todo list. Theoretically htmx allows you to delete html elements, but to keep it simple we'll be replacing the whole todo list.
 
-   Just as before, set `hx-target="#todo-list"` to have it target the whole todo list and `hx-swap="outerHTML"` to have it replace the whole target. To have htmx create a DELETE request, we'll use `hx-delete` and we use Go's `fmt` library to make an url using the todo ID:
+   Just as before, set `hx-target="#todo-list"` to have it target the whole todo list and `hx-swap="outerHTML"` to have it replace the whole html tag. To have htmx create a DELETE request, we'll use `hx-delete` and we use Go's `fmt` library to make an url using the todo ID:
 
    ```go
    import "fmt"
    ...
 
    templ todoItem(todo internal.Todo) {
-       <p class="w-full self-center">
+       <p>
            { todo.Text }
        </p>
        <div class="flex justify-end">
            <button
                type="button"
-               class="bg-transparent text-slate-100 font-semibold py-2 px-4 border border-slate-100 rounded hover:bg-slate-100 hover:text-black active:bg-slate-300 active:text-slate-700"
                hx-delete={ fmt.Sprintf("/todo/%d", todo.ID) }
                hx-target="#todo-list"
                hx-swap="outerHTML"
