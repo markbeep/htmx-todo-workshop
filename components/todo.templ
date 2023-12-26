@@ -17,7 +17,7 @@ templ TodoList(todos []internal.Todo) {
 	<div id="todo-list">
 		<h1>Todo List</h1>
 		<form
- 			hx-post={ fmt.Sprintf("/todo") }
+ 			hx-post="/todo"
  			hx-target="#todo-list"
  			hx-swap="outerHTML"
 		>
